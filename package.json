@@ -1,0 +1,27 @@
+{
+    "name": "buffer-bits",
+    "ersion": "0.0.1",
+    "author": {
+        "email": "strawhat2010@live.cn",
+        "name": "strawhat",
+        "url": "https://github.com/strawhatboy/"
+    },
+    "main": "lib/index.js",
+    "scripts": {
+        "test": "./node_modules/.bin/_mocha"
+    },
+    "dependencies": {
+        "log4js": "^1.1.1",
+        "bit-encode": "^1.0.0"
+    },
+    "devDependencies": {
+        "babel-preset-latest": "^6.24.1",
+        "gulp": "^3.9.1",
+        "gulp-babel": "^6.1.2",
+        "gulp-clean": "^0.3.2",
+        "gulp-sourcemaps": "^2.6.0",
+        "mocha": "^3.3.0",
+        "chai": "^3.5.0"
+    },
+    "license": "MIT"
+}
