@@ -11,7 +11,6 @@
         "test": "./node_modules/.bin/_mocha"
     },
     "dependencies": {
-        "log4js": "^1.1.1",
         "bit-encode": "^1.0.0"
     },
     "devDependencies": {
