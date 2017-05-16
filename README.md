@@ -73,3 +73,6 @@ console.log(myBits.readBit(20));
 
 ## More More Examples
 Please check the tests in `test` folder to see more details.
+
+## License
+MIT
