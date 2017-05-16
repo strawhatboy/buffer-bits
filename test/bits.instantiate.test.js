@@ -77,6 +77,7 @@ describe('Bits instantiate', function() {
         expect(bits.buffer[0]).equals(99);
         expect(bits.buffer[1]).equals(98);
         expect(bits.length).equals(15);
+        expect(bits.byteLength).equals(2);
         expect(bits.startOffset).equals(1);
     });
 
@@ -86,6 +87,7 @@ describe('Bits instantiate', function() {
         expect(bits.buffer[0]).equals(98);
         expect(bits.buffer[1]).equals(97);
         expect(bits.length).equals(16);
+        expect(bits.byteLength).equals(2);
         expect(bits.startOffset).equals(0);
     });
 
