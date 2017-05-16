@@ -1,5 +1,7 @@
 # buffer-bits
 
+[![Build Status](https://travis-ci.org/strawhatboy/buffer-bits.svg?branch=master)](https://travis-ci.org/strawhatboy/buffer-bits)
+
 This component is able to hold a set of bits (NOT bytes) and do operations on them. Could be used to analyze some protocol by yourself...
 
 ## Quick Example
