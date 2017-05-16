@@ -91,6 +91,26 @@ describe('Bits instantiate', function() {
         expect(bits.startOffset).equals(0);
     });
 
+    it('should be able to be allocated directly', function() {
+        var bits = Bits.alloc(5);
+        expect(bits.length).equals(5);
+        expect(bits.byteLength).equals(1);
+        expect(bits.startOffset).equals(3);
+        expect(bits.readInt()).equals(0);
+        expect(bits.readBit(3)).to.be.false;
+        bits.setBit(3, true);
+        expect(bits.readBit(3)).to.be.true;
+        expect(bits.readInt()).equals(2);
+    });
+
+    it('should be able to be allocated with zero length', function() {
+        var bits = Bits.alloc(0);
+        expect(bits.length).equals(0);
+        expect(bits.byteLength).equals(0);
+        expect(bits.startOffset).equals(0);
+        expect(bits.readInt()).to.be.undefined;
+    });
+
     describe('from another Bits', function() {
         it('should be able to initalize Bit from another Bits', function() {
             var anotherBits = Bits.from(Buffer.from([98]), 0, 5);

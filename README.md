@@ -24,6 +24,8 @@ console.log(myBits.toBinaryString());
         - create Bits from existing Buffer object
     * Bits.from(bits, offset, length)
         - create Bits from existing Bits object
+    * Bits.alloc(length)
+        - create Bits with count of bits and filled with 0
 2. Constructor
     * new Bits(buffer, offset, length) *
         - there's __NO__ params validating in this constructor, please __DON'T__ use it for creating new instance...
@@ -43,8 +45,14 @@ console.log(myBits.toBinaryString());
         - read the bit value (1: true, 0: false) at position 'index'
     * setBit(index, value)
         - set the bit value (1: true, 0: false) at position 'index'
-    * concat(bits)
+    * toggleBit(index)
+        - toggle the bit value at position 'index', 1->0, 0->1
+    * toggleAll()
+        - toggle all the bits
+    * concat(Bits)
         - create Bits by concating another Bits object
+    * equals(Bits)
+        - return true if all bits equals to another Bits object
 
 ## More Examples
 ```js

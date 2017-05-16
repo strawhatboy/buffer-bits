@@ -8,7 +8,7 @@ function getBARS(count) {
 
 exports = module.exports = class Bits {
 
-    
+
     /**
      * Creates an instance of Bits.
      * @deprecated Don't use new Bits, there's no params checking here
@@ -101,6 +101,19 @@ exports = module.exports = class Bits {
 
 
     /**
+     * Alloc a Bits object with bit length set
+     * 
+     * @static
+     * @param {Number} length 
+     */
+    static alloc(length) {
+        let byteLength = ((length - 1) >> 3) + 1
+        let buffer = Buffer.alloc(byteLength)
+        return Bits.from(buffer, (byteLength << 3) - length, length)
+    }
+
+
+    /**
      * Build new Bits object by concat another Bits
      * 
      * @param {any} anotherBits 
@@ -179,6 +192,25 @@ exports = module.exports = class Bits {
         BitEncode.set(this._buffer, this._startOffset + index, value)
     }
 
+    toggleBit(index) {
+        if (index >= this.length || index < 0) {
+            throw new Error('Out of range')
+        }
+        // BitEncode.set(this._buffer,
+        //     this._startOffset + index,
+        //     !BitEncode.get(this._buffer, this._startOffset + index))
+
+        let byteOffset = (this._startOffset + index) >> 3
+        let bitOffset = (this.startOffset + index) & BARS[3]
+        this._buffer[byteOffset] ^= (1 << (7 - bitOffset))
+    }
+
+    toggleAll() {
+        for (let i = 0; i < this._byteLength; i++) {
+            this._buffer[i] ^= BARS[8]
+        }
+    }
+
     toString() {
         return '[Bits Object]'
     }
@@ -189,5 +221,13 @@ exports = module.exports = class Bits {
             binString += this.readBit(i) ? '1' : '0'
         }
         return '0b' + binString
+    }
+
+    equals(anotherBits) {
+        if (anotherBits instanceof Bits) {
+            return anotherBits.toBinaryString() === this.toBinaryString()
+        } else {
+            return false
+        }
     }
 }
