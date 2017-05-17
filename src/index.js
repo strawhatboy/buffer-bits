@@ -225,9 +225,25 @@ exports = module.exports = class Bits {
 
     equals(anotherBits) {
         if (anotherBits instanceof Bits) {
-            return anotherBits.toBinaryString() === this.toBinaryString()
+            if (this._length != anotherBits.length) {
+                return false;
+            }
+
+            for (let i = 0; i < this._byteLength; i++) {
+                if (i == 0) {
+                    if ((this._buffer[0] ^ anotherBits.buffer[0]) & BARS[8 - this._startOffset] != 0) {
+                        return false;
+                    }
+                } else {
+                    if (this._buffer[0] ^ anotherBits.buffer[0] != 0) {
+                        return false;
+                    }
+                }
+            }
         } else {
             return false
         }
+
+        return true
     }
 }

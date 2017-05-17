@@ -1,6 +1,6 @@
 {
     "name": "buffer-bits",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "This component is able to hold a set of bits (NOT bytes) and do operations on them. Could be used to analyze some protocol by yourself...",
     "keywords": [
         "bits",

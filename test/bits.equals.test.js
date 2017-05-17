@@ -1,5 +1,6 @@
 var Bits = require('../lib/index');
-var expect = require('chai').expect
+var expect = require('chai').expect;
+var BitEncode = require('bit-encode');
 
 describe('Bits equals', function() {
     it('should be able to check if this bit equals to another one', function() {
@@ -9,6 +10,10 @@ describe('Bits equals', function() {
         var buffer2 = Buffer.from([99 << 1]);
         var bits2 = Bits.from(buffer2, 0, 7);
 
+        expect(bits.equals(bits2)).to.be.true;
+
+        BitEncode.set(bits2.buffer, 0, true);
+        expect(bits.buffer[0]).not.equals(bits2.buffer[0]);
         expect(bits.equals(bits2)).to.be.true;
     });
 
