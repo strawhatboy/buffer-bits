@@ -1,4 +1,5 @@
 import BitEncode from 'bit-encode'
+import BufferShift from 'buffershift'
 
 const BARS = [0, 1, 3, 7, 15, 31, 63, 127, 255]
 
@@ -179,6 +180,15 @@ exports = module.exports = class Bits {
 
     readIntLE() {
         return this._buffer.readIntLE(0, this._byteLength)
+    }
+
+    readString(encoding, start, end) {
+        let resultBuffer = this._buffer
+        if (this._startOffset != 0) {
+            resultBuffer = Buffer.from(this._buffer)
+            BufferShift.shl(resultBuffer, this._startOffset)
+        }
+        return resultBuffer.toString(encoding, start, end)
     }
 
     readBit(index) {

@@ -41,6 +41,8 @@ console.log(myBits.toBinaryString());
 3. Methods
     * readInt()
         - read integer value of current bits
+    * readString([encoding[, start[, end]]])
+        - read string from the bits, same as [buf.toString](https://nodejs.org/api/buffer.html#buffer_buf_tostring_encoding_start_end)
     * readBit(index)
         - read the bit value (1: true, 0: false) at position 'index'
     * setBit(index, value)
