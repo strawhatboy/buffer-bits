@@ -22,4 +22,10 @@ describe('Bits read int', function() {
         var bits = Bits.from(buffer, 1, 22);
         expect(bits.readInt()).equals(3256624);
     });
+
+    it('DEFECT: should be able to read int when there could be useless bits before startOffset', function() {
+        var buffer = Buffer.from([99]);
+        var bits = Bits.from(buffer, 3, 5);
+        expect(bits.readInt()).equals(3);
+    });
 });

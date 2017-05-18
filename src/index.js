@@ -38,6 +38,9 @@ exports = module.exports = class Bits {
             this._buffer = Buffer.alloc(byteLength)
             buffer.copy(this._buffer, 0, offset >> 3, (offset + length) >> 3)
             this._startOffset = offset & BARS[3]
+            if (byteLength > 0) {
+                this._buffer[0] &= BARS[8 - this._startOffset]
+            }
             this._byteLength = byteLength
             return
         }
