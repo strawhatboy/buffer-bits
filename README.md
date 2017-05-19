@@ -40,7 +40,13 @@ console.log(myBits.toBinaryString());
         - represents the start bit offset inside the byte. This property should be __RARELY__ used, use it when you know what you're doing...
 3. Methods
     * readInt()
-        - read integer value of current bits
+        - read integer value of current bits (_big endian_)
+    * readIntLE()
+        - read integer value of current bits with _little endian_
+    * readUInt()
+        - read unsigned integer value of current bits (_big endian_)
+    * readUIntLE()
+        - read unsigned integer value of current bits with _little endian_
     * readString([encoding[, start[, end]]])
         - read string from the bits, same as [buf.toString](https://nodejs.org/api/buffer.html#buffer_buf_tostring_encoding_start_end)
     * readBit(index)

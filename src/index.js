@@ -178,8 +178,16 @@ exports = module.exports = class Bits {
         return this._buffer.readIntBE(0, this._byteLength)
     }
 
+    readUInt() {
+        return this._buffer.readUIntBE(0, this._byteLength)
+    }
+
     readIntLE() {
         return this._buffer.readIntLE(0, this._byteLength)
+    }
+
+    readUIntLE() {
+        return this._buffer.readUIntLE(0, this._byteLength)
     }
 
     readString(encoding, start, end) {

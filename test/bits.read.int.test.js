@@ -28,4 +28,25 @@ describe('Bits read int', function() {
         var bits = Bits.from(buffer, 3, 5);
         expect(bits.readInt()).equals(3);
     });
+
+    it('should be able to read int with little endian', function() {
+        var buffer = Buffer.from([0, 5]);
+        var bits = Bits.from(buffer, 0, 16);
+        expect(bits.readInt()).equals(5);
+        expect(bits.readIntLE()).equals(1280);
+    });
+
+    it('should be able to read unsigned int', function() {
+        var buffer = Buffer.from([254, 98, 97]);
+        var bits = Bits.from(buffer, 0, 8);
+        expect(bits.readUInt()).equals(254);
+        expect(bits.readInt()).equals(-2);
+    });
+
+    it('should be able to read unsigned int with little endian', function() {
+        var buffer = Buffer.from([0x12, 0x34]);
+        var bits = Bits.from(buffer, 0, 16);
+        expect(bits.readUInt()).equals(0x1234);
+        expect(bits.readUIntLE()).equals(0x3412);
+    });
 });
