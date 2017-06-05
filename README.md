@@ -20,9 +20,9 @@ console.log(myBits.toBinaryString());
 ## Features
 
 1. Class Methods
-    * Bits.from(buffer, offset, length) 
+    * Bits.from(buffer [, offset = 0 [, length = buffer.length << 3 ]]) 
         - create Bits from existing Buffer object
-    * Bits.from(bits, offset, length)
+    * Bits.from(bits [, offset = 0 [, length = bits.length ]])
         - create Bits from existing Bits object
     * Bits.alloc(length)
         - create Bits with count of bits and filled with 0
@@ -38,6 +38,10 @@ console.log(myBits.toBinaryString());
         - inner Buffer object hold by Bits. Take care to __NOT__ write to this buffer directly.
     * startOffset *
         - represents the start bit offset inside the byte. This property should be __RARELY__ used, use it when you know what you're doing...
+    * isLeftAligned *
+        - represents if all the bits are left aligned in the inner buffer, __RARELY__
+    * isRightAligned *
+        - represents if all the bits are right aligned in the inner buffer, __RARELY__
 3. Methods
     * readInt()
         - read integer value of current bits (_big endian_)
@@ -59,8 +63,16 @@ console.log(myBits.toBinaryString());
         - toggle all the bits
     * concat(Bits)
         - create Bits by concating another Bits object
+    * toBinaryString()
+        - return a '0b\<binaryData\>' format string, like 0b110101010
     * equals(Bits)
         - return true if all bits equals to another Bits object
+    * align(Boolean) *
+        - align all the bits inside the inner buffer to the left(`true`) or right(`false`) side
+    * alignLeft() *
+        - align all the bits in the inner buffer to the left side
+    * alignRight() *
+        - align all the bits in the inner buffer to the right side
 
 ## More Examples
 ```js

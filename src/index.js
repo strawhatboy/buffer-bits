@@ -20,6 +20,7 @@ exports = module.exports = class Bits {
      * @memberof Bits
      */
     constructor(buffer, offset, length) {
+        this._isLeftAligned = false
         this._length = length
 
         // offset = 0, length = buffer.length, just copy...
@@ -93,14 +94,36 @@ exports = module.exports = class Bits {
         if (!(buffer instanceof Buffer || buffer instanceof Bits)) {
             throw new Error('Invalid type \'buffer\', should be either a [Buffer] or [Bits]')
         }
-        if ((buffer.length << 3) < length || (buffer.length << 3) < (offset + length)) {
+        if (offset === undefined) {
+            offset = 0
+        }
+        let buf = null
+        let bufBitsLength = null
+        let bufLength = null
+        let startOffset = offset
+        let len = length
+        if (buffer instanceof Buffer) {
+            buf = buffer
+            bufBitsLength = buffer.length << 3
+            bufLength = bufBitsLength
+        } else if (buffer instanceof Bits) {
+            buf = buffer.buffer
+            bufBitsLength = buffer.length
+            bufLength = buf.length << 3
+            startOffset = buffer.startOffset + offset
+        } else {
+            return undefined
+        }
+
+        if (length === undefined) {
+            len = bufBitsLength - offset
+        }
+
+        if ((bufBitsLength) < len || (bufLength) < (startOffset + len)) {
             throw new Error('Out Of range')
         }
-        if (buffer instanceof Buffer) {
-            return new Bits(buffer, offset, length)
-        } else if (buffer instanceof Bits) {
-            return new Bits(buffer.buffer, buffer.startOffset + offset, length)
-        }
+
+        return new Bits(buf, startOffset, len)
     }
 
 
@@ -174,29 +197,47 @@ exports = module.exports = class Bits {
         return this._byteLength
     }
 
+    get isLeftAligned() {
+        return this._isLeftAligned
+    }
+
+    get isRightAligned() {
+        return !this._isLeftAligned
+    }
+
     readInt() {
+        if (this._isLeftAligned) {
+            this.alignRight()
+        }
         return this._buffer.readIntBE(0, this._byteLength)
     }
 
     readUInt() {
+        if (this._isLeftAligned) {
+            this.alignRight()
+        }
         return this._buffer.readUIntBE(0, this._byteLength)
     }
 
     readIntLE() {
+        if (this._isLeftAligned) {
+            this.alignRight()
+        }
         return this._buffer.readIntLE(0, this._byteLength)
     }
 
     readUIntLE() {
+        if (this._isLeftAligned) {
+            this.alignRight()
+        }
         return this._buffer.readUIntLE(0, this._byteLength)
     }
 
     readString(encoding, start, end) {
-        let resultBuffer = this._buffer
-        if (this._startOffset != 0) {
-            resultBuffer = Buffer.from(this._buffer)
-            BufferShift.shl(resultBuffer, this._startOffset)
+        if (!this._isLeftAligned) {
+            this.alignLeft()
         }
-        return resultBuffer.toString(encoding, start, end)
+        return this._buffer.toString(encoding, start, end)
     }
 
     readBit(index) {
@@ -224,6 +265,32 @@ exports = module.exports = class Bits {
         let byteOffset = (this._startOffset + index) >> 3
         let bitOffset = (this.startOffset + index) & BARS[3]
         this._buffer[byteOffset] ^= (1 << (7 - bitOffset))
+    }
+
+    alignLeft() {
+        this.align(true)
+    }
+
+    alignRight() {
+        this.align(false)
+    }
+
+    align(isLeftAligned) {
+        let bufBitsLength = this._byteLength << 3
+        if (this._isLeftAligned && !isLeftAligned && this._length < bufBitsLength) {
+            // need to align right
+            let shiftBitsLength = bufBitsLength - this._length
+            BufferShift.shr(this._buffer, shiftBitsLength)
+            this._startOffset = shiftBitsLength
+        }
+
+        if (!this._isLeftAligned && isLeftAligned && this._length < bufBitsLength) {
+            // need to align left
+            BufferShift.shl(this._buffer, bufBitsLength - this._length)
+            this._startOffset = 0
+        }
+
+        // else do nothing
     }
 
     toggleAll() {

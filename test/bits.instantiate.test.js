@@ -91,6 +91,29 @@ describe('Bits instantiate', function() {
         expect(bits.startOffset).equals(0);
     });
 
+    it('should be able to initialize Bits with optional parameters - startOffset', function() {
+        var buffer = Buffer.from([99, 98, 97, 96]);
+        var bits = Bits.from(buffer);
+        expect(bits.buffer[0]).equals(99);
+        expect(bits.buffer[1]).equals(98);
+        expect(bits.buffer[2]).equals(97);
+        expect(bits.buffer[3]).equals(96);
+        expect(bits.length).equals(32);
+        expect(bits.startOffset).equals(0);
+        expect(bits.byteLength).equals(4);
+    });
+
+    it('should be able to initialize Bits with optional parameters - length', function() {
+        var buffer = Buffer.from([99, 98, 97, 96]);
+        var bits = Bits.from(buffer, 8);
+        expect(bits.buffer[0]).equals(98);
+        expect(bits.buffer[1]).equals(97);
+        expect(bits.buffer[2]).equals(96);
+        expect(bits.length).equals(24);
+        expect(bits.startOffset).equals(0);
+        expect(bits.byteLength).equals(3);
+    });
+
     it('should be able to be allocated directly', function() {
         var bits = Bits.alloc(5);
         expect(bits.length).equals(5);
@@ -123,6 +146,20 @@ describe('Bits instantiate', function() {
             expect(bits.buffer[0]).equals(1);
             expect(bits.startOffset).equals(6);
             expect(bits.length).equals(2);
+        });
+
+        it('should be able to initalize Bit from another Bits with optional parameters - startOffset', function() {
+            var anotherBits = Bits.from(Buffer.from([98]), 0, 5);
+            var bits = Bits.from(anotherBits);
+            expect(bits.equals(anotherBits)).to.be.true;
+        });
+
+        it('should be able to initalize Bit from another Bits with optional parameters - length', function() {
+            var anotherBits = Bits.from(Buffer.from([98]), 0, 5);
+            var bits = Bits.from(anotherBits, 1);
+            expect(bits.buffer[0]).equals(12);
+            expect(bits.startOffset).equals(4);
+            expect(bits.length).equals(4);
         });
     });
 });
