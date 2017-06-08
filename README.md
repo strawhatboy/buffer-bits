@@ -34,6 +34,8 @@ console.log(myBits.toBinaryString());
         - count of the total bits
     * byteLength
         - total bytes the Bits object holds
+    * isFullByte
+        - return true if total bits count is a multiple of 8 
     * buffer
         - inner Buffer object hold by Bits. Take care to __NOT__ write to this buffer directly.
     * startOffset *

@@ -205,39 +205,68 @@ exports = module.exports = class Bits {
         return !this._isLeftAligned
     }
 
+    get isFullByte() {
+        return (this._length & BARS[3]) === 0
+    }
+
     readInt() {
+        let result = undefined
         if (this._isLeftAligned) {
             this.alignRight()
+            result = this._buffer.readIntBE(0, this._byteLength)
+            this.alignLeft()
+        } else {
+            result = this._buffer.readIntBE(0, this._byteLength)
         }
-        return this._buffer.readIntBE(0, this._byteLength)
+        return result
     }
 
     readUInt() {
+        let result = undefined
         if (this._isLeftAligned) {
             this.alignRight()
+            result = this._buffer.readUIntBE(0, this._byteLength)
+            this.alignLeft()
+        } else {
+            result = this._buffer.readUIntBE(0, this._byteLength)
         }
-        return this._buffer.readUIntBE(0, this._byteLength)
+        return result
     }
 
     readIntLE() {
+        let result = undefined
         if (this._isLeftAligned) {
             this.alignRight()
+            result = this._buffer.readIntLE(0, this._byteLength)
+            this.alignLeft()
+        } else {
+            result = this._buffer.readIntLE(0, this._byteLength)
         }
-        return this._buffer.readIntLE(0, this._byteLength)
+        return result
     }
 
     readUIntLE() {
+        let result = undefined
         if (this._isLeftAligned) {
             this.alignRight()
+            result = this._buffer.readUIntLE(0, this._byteLength)
+            this.alignLeft()
+        } else {
+            result = this._buffer.readUIntLE(0, this._byteLength)
         }
-        return this._buffer.readUIntLE(0, this._byteLength)
+        return result
     }
 
     readString(encoding, start, end) {
+        let result = undefined
         if (!this._isLeftAligned) {
             this.alignLeft()
+            result = this._buffer.toString(encoding, start, end)
+            this.alignRight()
+        } else {
+            result = this._buffer.toString(encoding, start, end)
         }
-        return this._buffer.toString(encoding, start, end)
+        return result
     }
 
     readBit(index) {
@@ -282,12 +311,14 @@ exports = module.exports = class Bits {
             let shiftBitsLength = bufBitsLength - this._length
             BufferShift.shr(this._buffer, shiftBitsLength)
             this._startOffset = shiftBitsLength
+            this._isLeftAligned = false
         }
 
         if (!this._isLeftAligned && isLeftAligned && this._length < bufBitsLength) {
             // need to align left
             BufferShift.shl(this._buffer, bufBitsLength - this._length)
             this._startOffset = 0
+            this._isLeftAligned = true
         }
 
         // else do nothing
