@@ -33,4 +33,12 @@ describe('Bits equals', function() {
 
         expect(bits.equals({})).to.be.false;
     });
+
+    it('DEFECT #1: should be able to check if this bit equals another Bits object when byteLength larger than 1', function() {
+        var buffer = Buffer.from([99, 98]);
+        var bits = Bits.from(buffer, 1, 15);
+        var bits2 = Bits.from(buffer, 1, 15);
+
+        expect(bits.equals(bits2)).to.be.true;
+    });
 });

@@ -354,7 +354,7 @@ exports = module.exports = class Bits {
                         return false;
                     }
                 } else {
-                    if (this._buffer[i] ^ anotherBits.buffer[i] != 0) {
+                    if ((this._buffer[i] ^ anotherBits.buffer[i]) != 0) {
                         return false;
                     }
                 }
